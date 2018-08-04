@@ -1,0 +1,135 @@
+@@ Sluggy Update Checker v1.1
+@@  Used on SluggyMARE to announce when the new Sluggy comic has been posted
+@@  v1.0 was not working, and ended up disabled for some years
+
+@@ Channel command processing @@
+@defattr Sluggy Update Checker/bot_cmd
+
+@@ Command rate limiting @@
+@defattr Sluggy Update Checker/inccount
+@defattr Sluggy Update Checker/deccount
+@defattr Sluggy Update Checker/setcount
+@defattr Sluggy Update Checker/limits=function
+@defattr Sluggy Update Checker/getlimit=function
+@defattr Sluggy Update Checker/islimited=function
+@defattr Sluggy Update Checker/getcount=function
+@defattr Sluggy Update Checker/limitstatus=function
+@defattr Sluggy Update Checker/limitlist=function
+
+@@ Settings @@
+@defattr Sluggy Update Checker/chans=function
+@defattr Sluggy Update Checker/enabled
+
+@@ Code @@
+@defattr Sluggy Update Checker/check_sluggy_cmd
+@defattr Sluggy Update Checker/slugsup_cmd
+@defattr Sluggy Update Checker/check_sluggy_check_cmd
+@defattr Sluggy Update Checker/aatime
+
+
+@@ Basic settings @@
+@set Sluggy Update Checker=Color:3
+@set Sluggy Update Checker=Desc:This provides the CHECK_SLUGGY command to NightMAREbot.
+@set Sluggy Update Checker=Caption:[ifelse(hasflag(me,h),ansi(r,is disabled),ifelse(v(enabled),ansi(11,is checking),ansi(3,is not checking)))]
+
+@@ Command rate limiting @@
+@set Sluggy Update Checker=getlimit:[extract(extract(limits(),wmatch(limits(),strcat(v(0),~*)),1),2,1,~)]
+@set Sluggy Update Checker=islimited:[truth(wmatch(limits(),strcat(v(0),~*)))]
+@set Sluggy Update Checker=getcount:[extract(extract(limits(),wmatch(limits(),strcat(v(0),~*)),1),3,1,~)]
+@set Sluggy Update Checker=limitstatus:[ifelse(islimited(v(0)),iftrue(eq(getcount(v(0)),getlimit(v(0))),ifelse(gt(getcount(v(0)),getlimit(v(0))),2,0)),0)]
+@set Sluggy Update Checker=limitlist:[foreach(limits(),[first(v(0),~)])]
+@set Sluggy Update Checker=inccount: @switch [islimited(v(0))]=1,{ @echo [v(0)] status: [limitstatus(v(0))]  count: [getcount(v(0))]  limit: [getlimit(v(0))]; @echo inc'ing [v(0)] count to [inc(getcount(v(0)))]; @limits me=[remove(limits(),wmatch(limits(),strcat(v(0),~*)),1)] [v(0)]~[getlimit(v(0))]~[inc(getcount(v(0)))]; }
+@set Sluggy Update Checker=deccount: @switch [land(islimited(v(0)),gt(getcount(v(0)),0))]=1,{ @echo dec'ing [v(0)] count to [ifelse(eq(getcount(v(0)),0),0,dec(getcount(v(0))))]; @limits me=[remove(limits(),wmatch(limits(),strcat(v(0),~*)),1)] [v(0)]~[getlimit(v(0))]~[dec(getcount(v(0)))]; }
+@set Sluggy Update Checker=setcount: @switch [land(islimited(v(0)),isnum(v(1)))]=1,{ @echo dec'ing [v(0)] count to [ifelse(eq(getcount(v(0)),0),0,dec(getcount(v(0))))]; @limits me=[remove(limits(),wmatch(limits(),strcat(v(0),~*)),1)] [v(0)]~[getlimit(v(0))]~[v(1)]; }
+
+@@ Time based code @@
+@set Sluggy Update Checker=aatime: @foreach limitlist()={ @tr me/deccount=\[v(0)]; }
+@@ Crontab:
+@@	check_sluggy_check	every minute
+@@	@aatime				every minute
+@@	@set me=enabled:1	at 23:50
+#mupdate on
+@set Sluggy Update Checker=crontab:
+	{* * * * * check_sluggy_check}
+	{* * * * * @tr me/aatime}
+	{50 23 * * * @set me=enabled:1}
+.
+
+@@ Channel command handler @@
+@set Sluggy Update Checker=bot_cmd:$bot_cmd * * *:
+	@echo [ansi(v(color),s(Channel: [v(0)] Name: [v(1)] Command: [first(v(2))] Params: [rest(v(2))]))];
+	@switch lor(gt(wmatch(chans(),v(0)),0),eq(wcount(chans()),0))=1,{
+		@switch [limitstatus(first(v(2)))]=1,{
+			send_chan [v(0)] sorry, I disabled [first(v(2))] for a while.;
+		},2,{
+			send_page [v(1)] Sorry, I'm too tired to do that right now! The more you try, the longer it'll take me to get my strength back!;
+		},{
+			@switch [first(v(2))]=check_sluggy,{
+				@switch [wcount(v(2))]=1,{
+					@emit CHECK_SLUGGY [v(0)];
+				};
+			};
+		};
+		@tr me/inccount=[first(v(2))];
+	};
+.
+#mupdate off
+
+@@ Commands @@
+#mupdate on
+@set Sluggy Update Checker=check_sluggy_cmd:$CHECK_SLUGGY *:
+	@switch [first(v(1))]=DEBUG,{
+		send_chan _bot CHECK_SLUGGY: [rest(v(1))];
+	},NEWCOMIC,{
+		@@send_chan _bot CHECK_SLUGGY: Alert! Alert! New Sluggy Alert!;
+		@set me=enabled:0;
+		SLUGSUP;
+	},UPDATE,{
+		send_chan _bot CHECK_SLUGGY: www.sluggy.com has updated.;
+	},NOCHANGE,{
+		@@send_chan _bot CHECK_SLUGGY: No sluggy update [[time()]];
+	},NOPAGE,{
+		send_chan _bot CHECK_SLUGGY: Error checking for sluggy update, no page returned!;
+	},NOLASTFILE,{
+		send_chan _bot CHECK_SLUGGY: No last file check against;
+	},{
+		send_chan _bot CHECK_SLUGGY: Unexpected: [v(1)];
+	};
+.
+@set Sluggy Update Checker=slugsup_cmd:$SLUGSUP:
+	@wemit [ansi(9,Alert!  Alert!  New Sluggy Alert!  http://www.sluggy.com)]
+.
+@set Sluggy Update Checker=check_sluggy_check_cmd:$check_sluggy_check:
+	@switch [v(enabled)]=1,{
+		@emit CHECK_SLUGGY;
+	};
+.
+#mupdate off
+
+@@ Settings @@
+@set Sluggy Update Checker=chans:_bot
+@set Sluggy Update Checker=enabled:1
+
+@@ Automatic Configuration @@
+
+#mupdate on
+@fo me={
+	@switch [cross_mare_id_list_installed()]=1,{
+		@switch [isdbref(cross_mare_id(listuzo))]=1,{
+			@switch [isdbref(cross_mare_id(cronparent))]=0,{
+				@echo [ansi(y+,WARNING: Unable to look up the ID of the Cron Parent, you will need to manually @addparent it.)];
+			},{
+				@switch [wmatch(parents(Sluggy Update Checker),cross_mare_id(cronparent))]=0,{
+					@addparent Sluggy Update Checker=[cross_mare_id(cronparent)];
+					@echo [ansi(g+,Sluggy Update Checker is now a child of Cron Parent)];
+				};
+			};
+		},{
+			@echo [ansi(y+,WARNING: Unable to look up ID List Parent UZO. Unable to add Age Limited List Parent.)];
+		};
+	},{
+		@echo [ansi(y+,WARNING: ID List Parent not added to a UZO. Unable to add Age Limited List Parent)];
+	};
+}
+.
+#mupdate off

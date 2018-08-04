@@ -1,0 +1,106 @@
+@@ WikiMARE Bugs Interface v1.0
+
+@set WikiMARE Bugs Interface=alias:bugs
+@set WikiMARE Bugs Interface=color:r
+@set WikiMARE Bugs Interface=caption:[ifelse(hasflag(me,h),ansi(r,is disabled),interfaces with the WikiMARE MAGA bugs database)]
+@set WikiMARE Bugs Interface=desc:This is an interface between the !bugs command and the WikiMARE bugs database.
+
+@defattr WikiMARE Bugs Interface/bugmodes=function
+@defattr WikiMARE Bugs Interface/response_chan=function
+@defattr WikiMARE Bugs Interface/cmd_bugs
+@defattr WikiMARE Bugs Interface/cmd_bugs_rss
+@defattr WikiMARE Bugs Interface/cmd_getbugs
+@defattr WikiMARE Bugs Interface/bot_cmd
+@defattr WikiMARE Bugs Interface/bot_cmd_params
+@defattr WikiMARE Bugs Interface/rss_seen_list=function
+@defattr WikiMARE Bugs Interface/rss_channel=function
+
+@defattr WikiMARE Bugs Interface/get_url_attr=function
+@defattr WikiMARE Bugs Interface/get_title_attr=function
+@defattr WikiMARE Bugs Interface/get_desc_attr=function
+@defattr WikiMARE Bugs Interface/get_date_attr=function
+@defattr WikiMARE Bugs Interface/get_unique=function
+@defattr WikiMARE Bugs Interface/rss_seen=function
+
+@set WikiMARE Bugs Interface=bugmodes:new
+@set WikiMARE Bugs Interface=rss_channel:SluggyMAGA
+
+@set WikiMARE Bugs Interface=get_url_attr:[v(strcat(rss_url_,v(0)))]
+@set WikiMARE Bugs Interface=get_title_attr:[v(strcat(rss_title_,v(0)))]
+@set WikiMARE Bugs Interface=get_desc_attr:[v(strcat(rss_desc_,v(0)))]
+@set WikiMARE Bugs Interface=get_date_attr:[v(strcat(rss_date_,v(0)))]
+@set WikiMARE Bugs Interface=get_unique:[strcat(get_url_attr(v(0)),_,get_date_attr(v(0)))]
+@set WikiMARE Bugs Interface=rss_seen:[truth(wmatch(rss_seen_list(),get_unique(v(0))))]
+
+@set WikiMARE Bugs Interface=decode:[setq(9,v(0))][setq(8,lnum(wcount(v(9),_)))][oper(v(8),,[setq(2,inc(v(0)))][setq(3,extract(v(9),v(2),1,_))][v(1)][switch(mod(v(2),2),0,ifelse(eq(v(3),37),%%%%,chr(v(3))),v(3))])]
+
+#mupdate on
+@set WikiMARE Bugs Interface=cmd_bugs:$BUGS *:
+	@switch [gt(wcount(secure(v(0)),|),1)]=1,{
+		@switch [wmatch(Id Summary,trim(rest(first(secure(v(0)),|))))]=0,{
+			send_chan [response_chan()] [trim(rest(first(secure(v(0)),|)))]: [trim(extract(secure(v(0)),2,1,|))];
+		};
+	};
+.
+
+@set WikiMARE Bugs Interface=cmd_bugs_rss:$BUGS_RSS *:
+	@echo * Bugs Rss 0:[s(v(0))] ;
+	@switch [first(s(v(0)))]=DONE,{
+		@echo * Bugs is done.;
+		@foreach [setq(1,lattrdef(me))][lnum(last(extract(v(1),last(matchall(v(1),rss_url_*)),1),_))]={
+			@switch \\\[rss_seen(inc(s(v(0))))]=0,{
+				@@ We only want to announce the Bug items ;
+				@switch \\\[match(first(get_title_attr(inc(s(v(0))))),Item*)]=1,{
+					@cemit [rss_channel()]={BUG: \\\[decode(get_title_attr(inc(v(0))))] \\\[decode(get_url_attr(inc(v(0))))]}
+				};
+				@set me=rss_seen_list:\\\[setunion(rss_seen_list(),get_unique(inc(s(v(0)))))];
+			};
+			@undef me/rss_url_\\\[inc(s(v(0)))];
+			@undef me/rss_title_\\\[inc(s(v(0)))];
+			@undef me/rss_desc_\\\[inc(s(v(0)))];
+			@undef me/rss_date_\\\[inc(s(v(0)))];
+		};
+	},URL,{
+		@@ Create unique sequentially numbered attrs to hold each URL / TITLE / DESC / DATE;
+		@defattr me/rss_url_[setq(1,lattrdef(me))][inc(last(extract(v(1),last(matchall(v(1),rss_url_*)),1),_))];
+		@set me=rss_url_[setq(1,lattrdef(me))][inc(last(extract(v(1),last(matchall(v(1),rss_url_*)),1),_))]:[rest(s(v(0)))];
+	},TITLE,{
+		@defattr me/rss_title_[setq(1,lattrdef(me))][inc(last(extract(v(1),last(matchall(v(1),rss_title_*)),1),_))];
+		@set me=rss_title_[setq(1,lattrdef(me))][inc(last(extract(v(1),last(matchall(v(1),rss_title_*)),1),_))]:[rest(s(v(0)))];
+	},DESC,{
+		@defattr me/rss_desc_[setq(1,lattrdef(me))][inc(last(extract(v(1),last(matchall(v(1),rss_desc_*)),1),_))];
+		@set me=rss_desc_[setq(1,lattrdef(me))][inc(last(extract(v(1),last(matchall(v(1),rss_desc_*)),1),_))]:[rest(s(v(0)))];
+	},DATE,{
+		@defattr me/rss_date_[setq(1,lattrdef(me))][inc(last(extract(v(1),last(matchall(v(1),rss_date_*)),1),_))];
+		@set me=rss_date_[setq(1,lattrdef(me))][inc(last(extract(v(1),last(matchall(v(1),rss_date_*)),1),_))]:[rest(s(v(0)))];
+	};
+.
+
+@set WikiMARE Bugs Interface=cmd_getbugs:$getbugs *=*:
+	@set me=response_chan:[v(0)];
+	@switch [wmatch(bugmodes(),v(1))]=1,{
+		@emit BUGS [v(1)];
+	};
+.
+
+@set WikiMARE Bugs Interface=bot_cmd:$bot_cmd * * *:
+	@@ Handles command without parameters: channel name !command;
+
+	@@ Only handle commands with no parameters. @bot_cmd_params handles commands with parameters.;
+	@switch wcount(v(2))=1,{
+		@echo [ansi(+y,bot_cmd)]  [ansi(+g,Channel:)] [ansi(c,v(0))]  [ansi(+g,Name:)] [ansi(c,v(1))]  [ansi(+g,Command:)] [ansi(c,v(2))];
+		@switch [v(2)]=bugs,{
+			getbugs [v(0)]=new;
+		};
+	};
+.
+
+@set WikiMARE Bugs Interface=bot_cmd_params:$bot_cmd * * * *:
+@@ Handles commands with parameters: channel name !command param;
+    @echo [ansi(+y,bot_cmd_params)]  [ansi(+g,Channel:)] [ansi(c,v(0))]  [ansi(+g,Name:)] [ansi(c,v(1))]  [ansi(+g,Command:)] [ansi(c,v(2))]  [ansi(+g,Params:)] [ansi(c,v(3))];
+		@switch [v(2)]=bugs,{
+			send_chan [v(0)] Sorry, !bugs does not take any parameters at this time;
+		};
+.
+
+#mupdate off

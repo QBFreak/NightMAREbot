@@ -1,0 +1,166 @@
+@@ Hubot Handler v1.0
+
+@defattr Hubot Handler/botid=function lock
+
+@defattr Hubot Handler/cmd_hubot
+@defattr Hubot Handler/cmd_tfgag
+@defattr Hubot Handler/cmd_slack
+@defattr Hubot Handler/chancmd
+@defattr Hubot Handler/chancmdtf
+@defattr Hubot Handler/chancode
+@defattr Hubot Handler/hubot_channel=function
+@defattr Hubot Handler/hubot_user=function
+@defattr Hubot Handler/hubot_subtype=function
+@defattr Hubot Handler/hubot_message=function
+@defattr Hubot Handler/hubot_users=function
+@defattr Hubot Handler/hubot_user_color=function
+@defattr Hubot Handler/hubot_user_cname=function
+@defattr Hubot Handler/hubot_user_name=function
+@defattr Hubot Handler/hubot_forward_channels=function
+
+@defattr Hubot Handler/sep_rec=function
+@defattr Hubot Handler/sep_var=function
+@defattr Hubot Handler/sep_val=function
+@defattr Hubot Handler/hubot_lookup_user=function
+@defattr Hubot Handler/tr_update_user
+
+@defattr Hubot Handler/bot_cmd
+@defattr Hubot Handler/bot_cmd_params
+
+@defattr Hubot Handler/hubot_room=function
+@@set Hubot Handler=hubot_room:bot
+
+@set Hubot Handler=color:12
+@set Hubot Handler=caption:[ifelse(hasflag(me,h),ansi(r,is disabled),Interfaces between a TinyFugue Hubot world and TinyMARE)]
+@set Hubot Handler=desc:Handles the commands that TinyFugue sends when it receives channel activity in a Slack/Hubot world. Channel activity is forwarded on to matching #channels. Provides a database of user settings to convert Slack nicks into display names, colors, and cnames, falling back to player names that match the nick, or failing that, psuedo-random colors.
+
+@@ The seperator between multiple records
+@set Hubot Handler=sep_rec:[chr(35)]
+@set Hubot Handler=sep_rec:`
+@@ The seperator between multiple variables
+@set Hubot Handler=sep_var:[chr(36)]
+@set Hubot Handler=sep_var:|
+@@ The seperator between a single varaible and it's value
+@set Hubot Handler=sep_val:[chr(37)]
+@set Hubot Handler=sep_val:~
+
+@@ (register_string, name)
+@set Hubot Handler=hubot_lookup_user:[extract(hubot_users(),wmatch(hubot_users(),strcat(v(0),sep_var(),*),sep_rec()),1,sep_rec())]
+
+@set Hubot Handler=hubot_channel:[setq(1,trim(rest(extract(v(0),wmatch(v(0),channel='*'),1),=),B,'))][ifelse(match(DM,v(1)),DM,strcat(#,v(1)))]
+@set Hubot Handler=hubot_user:[trim(rest(extract(v(0),wmatch(v(0),user='*'),1),=),B,')]
+@set Hubot Handler=hubot_subtype:[trim(rest(extract(v(0),wmatch(v(0),subtype='*'),1),=),B,')]
+@set Hubot Handler=hubot_message:[extract(v(0),4,wcount(v(0)))]
+@set Hubot Handler=hubot_user_color:[setq(1,rest(extract(hubot_lookup_user(v(0)),wmatch(hubot_lookup_user(v(0)),strcat(color,sep_val(),*),sep_var()),1,sep_var()),sep_val()))][setq(2,get(pnum(v(0)),color))][setq(2,ifelse(match(#-1,first(v(2))),,v(2)))][setq(3,inc(mod(ascii(left(v(0),1)),15)))][ifelse(wcount(v(1)),v(1),ifelse(wcount(v(2)),v(2),v(3)))]
+@set Hubot Handler=hubot_user_cname:[setq(1,rest(extract(hubot_lookup_user(v(0)),wmatch(hubot_lookup_user(v(0)),strcat(cname,sep_val(),*),sep_var()),1,sep_var()),sep_val()))][setq(2,get(pnum(v(0)),cname))][setq(2,ifelse(match(#-1,first(v(2))),,v(2)))][setq(3,hubot_user_color())][setq(4,inc(mod(ascii(left(v(0),1)),15)))][ifelse(wcount(v(1)),v(1),ifelse(wcount(v(2)),v(2),ifelse(wcount(v(3)),v(3),v(4))))]
+@set Hubot Handler=hubot_user_name:[setq(1,rest(extract(hubot_lookup_user(v(0)),wmatch(hubot_lookup_user(v(0)),strcat(name,sep_val(),*),sep_var()),1,sep_var()),sep_val()))][setq(2,name(pnum(v(0))))][setq(2,ifelse(match(#-1,first(v(2))),,v(2)))][ifelse(wcount(v(1)),v(1),ifelse(wcount(v(2)),v(2),v(0)))]
+
+@@ Response handlers for sendmsg.pl
+@set Hubot Handler=cmd_slack:$SLACK *:@echo # Response: [v(0)]
+
+@@ For interfacing with other MARE-code modules
+@set Hubot Handler=chancmd:$procchan *=*:@tr me/chancode=%0,%1
+
+@@ For interfacing with TinyFugue
+@set Hubot Handler=chancmdtf:$procchan [*] *: @tr me/chancode=%0,%1
+
+
+#mupdate on
+@set Hubot Handler=chancode:
+	@switch [truth(wmatch(hubot_forward_channels(),v(0)))]=1,{
+		@@ WARNING: If you change the format of this, you need to change the format of @tfgag;
+		@emit SLACK [hubot_room()] [encode(v(0))] [encode(v(1))];
+	};
+.
+
+@set Hubot Handler=cmd_tfgag:$@tfgag *={*}:
+	@@ WARNING: If you change the format of this, you need to change the format of chancode;
+	@emit @@TFGAG [hubot_room()] [encode(v(0))] [encode(v(1))];
+.
+
+@set Hubot Handler=cmd_hubot:$hubot *:
+	@echo HUBOT: [v(0)];
+	@switch [land(eq(match(hubot_channel(v(0)),DM),0),wcount(hubot_message(v(0))))]=1,{
+		@@ IF YOU UPDATE THE @cemit MAKE SURE YOU MAKE THE @emit MATCH!!;
+		@tfgag [hubot_channel(v(0))]={[ctext(hubot_user_name(hubot_user(v(0))),hubot_user_cname(hubot_user(v(0))))][ansi(strcat(hubot_user_color(hubot_user(v(0))),+),if(not(match(hubot_subtype(v(0)),me_message)),:))] [ansi(strcat(hubot_user_color(hubot_user(v(0))),+),hubot_message(v(0)))]};
+		@cemit [hubot_channel(v(0))]={[ctext(hubot_user_name(hubot_user(v(0))),hubot_user_cname(hubot_user(v(0))))][ansi(strcat(hubot_user_color(hubot_user(v(0))),+),if(not(match(hubot_subtype(v(0)),me_message)),:))] [ansi(strcat(hubot_user_color(hubot_user(v(0))),+),hubot_message(v(0)))]};
+	};
+.
+
+@set Hubot Handler=tr_update_user:
+@@ tr_update_user=user.key,value
+	@switch [land(wcount(v(0)),land(wcount(v(1)),wcount(v(2))))]=1,{
+		@set me=hubot_users:[setq(3,iftrue(hubot_lookup_user(v(0)),v(0)))][setunion(setdiff(hubot_users(),v(3),sep_rec()),setunion(setdiff(v(3),extract(v(3),wmatch(v(3),strcat(v(1),sep_val(),*),sep_var()),1,sep_var()),sep_var()),strcat(v(1),sep_val(),v(2)),sep_var()),sep_rec())];
+	},{
+		@switch [land(wcount(v(0)),wcount(v(1)))]=1,{
+			@set me=hubot_users:[setq(3,iftrue(hubot_lookup_user(v(0)),v(0)))][setunion(setdiff(hubot_users(),v(3),sep_rec()),setdiff(v(3),extract(v(3),wmatch(v(3),strcat(v(1),sep_val(),*),sep_var()),1,sep_var()),sep_var()),sep_rec())];
+		},{
+			@switch [truth(wcount(v(0)))]=1,{
+				@set me=hubot_users:[setdiff(hubot_users(),iftrue(hubot_lookup_user(v(0)),v(0)),sep_rec())];
+			}
+		};
+	};
+.
+
+@set Hubot Handler=bot_cmd:$bot_cmd * * *:
+	@@ Handles command without parameters: channel name !command;
+
+	@@ Only handle commands with no parameters. @bot_cmd_params handles commands with parameters.;
+	@switch wcount(v(2))=1,{
+		@echo [ansi(+y,bot_cmd)]  [ansi(+g,Channel:)] [ansi(c,v(0))]  [ansi(+g,Name:)] [ansi(c,v(1))]  [ansi(+g,Command:)] [ansi(c,v(2))];
+		@switch [v(2)]=slack,{
+			send_chan [v(0)] Usage: !slack name <nick>=<name>  OR  !slack color <nick>=<color>  OR  !slack cname <nick>=<cname>;
+			send_chan [v(0)] Usage: !slack add chan=<channel>  OR  !slack del chan=<channel>  OR !slack channels;
+		};
+	};
+.
+
+@set Hubot Handler=bot_cmd_params:$bot_cmd * * * *:
+@@ Handles commands with parameters: channel name !command param;
+    @echo [ansi(+y,bot_cmd_params)]  [ansi(+g,Channel:)] [ansi(c,v(0))]  [ansi(+g,Name:)] [ansi(c,v(1))]  [ansi(+g,Command:)] [ansi(c,v(2))]  [ansi(+g,Params:)] [ansi(c,v(3))];
+		@switch [v(2)]=slack,{
+			@switch [truth(wmatch(name color cname,first(v(3))))]=1,{
+				@switch [wcount(rest(v(3)),=)]=2,{
+					@tr me/tr_update_user={[first(rest(v(3)),=)]},{[first(v(3))]},{[ifelse(match(cname,first(v(3))),edit(rest(rest(v(3)),=),{ },{,}),rest(rest(v(3)),=))]};
+					@fo [botid()]=+com [v(0)]=Ok, Slack user [first(rest(v(3)),=)] is now [switch(first(v(3)),name,s(known as [rest(rest(v(3)),=)]),color,ansi(rest(rest(v(3)),=),hubot_user_name(first(rest(v(3)),=))),cname,ctext(hubot_user_name(first(rest(v(3)),=)),edit(rest(rest(v(3)),=),{ },{,})))];
+				},{
+					send_chan [v(0)] Usage: !slack [first(v(3))] <nick>=<[first(v(3))]>;
+				}
+			},{
+				@switch [first(v(3))]=add,{
+					@switch [wcount(rest(v(3)),=)]=2,{
+						@switch [match(chan,first(rest(v(3)),=))]=1,{
+							@set me=hubot_forward_channels:[setunion(hubot_forward_channels(),rest(rest(v(3)),=))];
+							send_chan [v(0)] Channel [rest(rest(v(3)),=)] will now be forwarded to slack;
+						},{
+							send_chan [v(0)] Usage: !slack add chan=<channel>;
+						};
+					},{
+						send_chan [v(0)] Usage: !slack add chan=<channel>;
+					};
+				},del,{
+					@switch [wcount(rest(v(3)),=)]=2,{
+						@switch [match(chan,first(rest(v(3)),=))]=1,{
+							@set me=hubot_forward_channels:[setdiff(hubot_forward_channels(),rest(rest(v(3)),=))];
+							send_chan [v(0)] Channel [rest(rest(v(3)),=)] will no longer be forwarded to slack;
+						},{
+							send_chan [v(0)] Usage: !slack del chan=<channel>;
+						};
+					},{
+						send_chan [v(0)] Usage: !slack del chan=<channel>;
+					};
+				},channels,{
+					@switch [wcount(v(3))]=1,{
+						send_chan [v(0)] The following channels are forwarded to slack: [hubot_forward_channels()];
+					},{
+						send_chan [v(0)] Usage: !slack channels;
+					};
+				},{
+					send_chan [v(0)] Usage: !slack name <nick>=<name>  OR  !slack color <nick>=<color>  OR  !slack cname <nick>=<cname>;
+					send_chan [v(0)] Usage: !slack add chan=<channel>  OR  !slack del chan=<channel>  OR !slack channels;
+				};
+			}
+		};
+.
+
+#mupdate off

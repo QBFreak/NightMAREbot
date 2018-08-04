@@ -1,0 +1,100 @@
+@@ Weather Handler
+
+@defattr Weather handler/bot_cmd
+@defattr Weather handler/inccount
+@defattr Weather handler/deccount
+@defattr Weather handler/setcount
+@defattr Weather handler/limits=function
+@defattr Weather handler/getlimit=function
+@defattr Weather handler/islimited=function
+@defattr Weather handler/getcount=function
+@defattr Weather handler/limitstatus=function
+@defattr Weather handler/limitlist=function
+@defattr Weather handler/geticao_cmd
+@defattr Weather handler/getweathericao_cmd
+@defattr Weather handler/getweatherloc_cmd
+@defattr Weather handler/chans=function
+
+@set Weather handler=Alias:ufo
+@set Weather handler=getlimit:[extract(extract(limits(),wmatch(limits(),strcat(v(0),~*)),1),2,1,~)]
+@set Weather handler=islimited:[truth(wmatch(limits(),strcat(v(0),~*)))]
+@set Weather handler=getcount:[extract(extract(limits(),wmatch(limits(),strcat(v(0),~*)),1),3,1,~)]
+@set Weather handler=limitstatus:[ifelse(islimited(v(0)),iftrue(eq(getcount(v(0)),getlimit(v(0))),ifelse(gt(getcount(v(0)),getlimit(v(0))),2,0)),0)]
+@set Weather handler=limitlist:[foreach(limits(),[first(v(0),~)])]
+@set Weather handler=Atime: @foreach limitlist()={ @tr me/deccount=\[v(0)]; }
+@set Weather handler=Color:14
+@set Weather handler=Desc:This handles NightMAREbot's weather commands.
+
+#mupdate on
+@set Weather handler=inccount:
+	@switch [islimited(v(0))]=1,{
+		@echo [v(0)] status: [limitstatus(v(0))]  count: [getcount(v(0))]  limit: [getlimit(v(0))];
+		@echo inc'ing [v(0)] count to [inc(getcount(v(0)))];
+		@limits me=[remove(limits(),wmatch(limits(),strcat(v(0),~*)),1)] [v(0)]~[getlimit(v(0))]~[inc(getcount(v(0)))];
+	}
+.
+
+@set Weather handler=deccount:
+	@switch [land(islimited(v(0)),gt(getcount(v(0)),0))]=1,{
+		@echo dec'ing [v(0)] count to [ifelse(eq(getcount(v(0)),0),0,dec(getcount(v(0))))];
+		@limits me=[remove(limits(),wmatch(limits(),strcat(v(0),~*)),1)] [v(0)]~[getlimit(v(0))]~[dec(getcount(v(0)))];
+	}
+.
+
+@set Weather handler=setcount:
+	@switch [land(islimited(v(0)),isnum(v(1)))]=1,{
+		@echo dec'ing [v(0)] count to [ifelse(eq(getcount(v(0)),0),0,dec(getcount(v(0))))];
+		@limits me=[remove(limits(),wmatch(limits(),strcat(v(0),~*)),1)] [v(0)]~[getlimit(v(0))]~[v(1)];
+	}
+.
+
+@set Weather handler=bot_cmd:$bot_cmd * * *:
+	@echo [ansi(v(color),s(Channel: [v(0)] Name: [v(1)] Command: [first(v(2))] Params: [rest(v(2))]))];
+	@switch lor(gt(wmatch(chans(),v(0)),0),eq(wcount(chans()),0))=1,{
+		@switch [limitstatus(first(v(2)))]=1,{
+			send_chan [v(0)] sorry, I disabled [first(v(2))] for a while.;
+ 		},2,{
+ 			send_page [v(1)] Sorry, I'm too tired to do that right now! The more you try, the longer it'll take me to get my strength back!;
+ 		},{
+ 			@switch first(v(2))=weather,{
+ 				@switch wcount(v(2))=2,{
+					@@ ICAO?;
+					@switch gt(strlen(extract(v(2),2,1)),4)=1,{
+						@@ Too long!;
+						send_chan [v(0)] That station ID is too long, try !weather CITY ST to look up weather by city/state;
+					},{
+						@pemit *nmb=GETWEATHERICAO [v(0)] [ucstr(extract(v(2),2,1))];
+						};
+				},3,{
+						@@ CITY ST;
+						@pemit *nmb=GETWEATHERLOC [v(0)] [setq(3,edit(rest(v(2)),{,},))][first(v(3))] [extract(v(3),2,1)];
+				},{
+					@@ Weather help;
+					send_chan [v(0)] The weather command retreives current conditions for a given weather station. Usage: !weather <ICAO> or !weather <CITY> <ST> try !station <CITY> <ST> to look up ICAO codes by city/state;
+				};
+			},station,{
+				@pemit *nmb=GETICAO [v(0)] [rest(v(2))];
+	 		};
+		};
+		@tr me/inccount=[first(v(2))];
+	};
+.
+
+@set Weather handler=geticao_cmd:$ICAO * *:
+	@switch v(1)=NOTFOUND,{
+		send_chan [v(0)] I was unable to find any stations for that location.;
+	},BADPARAM,{
+		send_chan [v(0)] Something seems to be wrong with the station lookup, sorry.;
+		@fo *nmb=+mail qb=BADPARAM on geticao.sh!;
+	},NOSTATIONS,{
+		send_chan [v(0)] I seem to have lost my station database, sorry.;
+		@fo *nmb=+mail qb=NOSTATIONS on geticao.sh!;
+	},{
+	    send_chan [v(0)] The station for [extract(v(1),1,1)], [extract(v(1),2,1)] is [extract(v(1),3,1)];
+	}
+.
+#mupdate off
+
+@set Weather handler=getweathericao_cmd:$WEATHERICAO * *: send_chan [v(0)] [v(1)];
+@set Weather handler=getweatherloc_cmd:$WEATHERLOC * *: send_chan [v(0)] [v(1)];
+@set Weather handler=chans:_bot spam

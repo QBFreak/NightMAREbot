@@ -1,0 +1,23 @@
+@@ NightMAREbot UZO v1.0
+@@  Provides NMB with notifications for Connect/Disconnect/Unidle
+
+@set #69=Universal
+
+@set #69=Cname:[get(v(botid),cname)]
+@set #69=Color:[get(v(botid),color)]
+@set #69=Caption:UZO v1.0
+@set #69=Desc:Notifies [unparse(v(botid))] of game events, such as player connect and disconnect.
+
+@defattr #69/botid
+@set #69=botid:#3
+
+@set #69=Aconnect:@pemit [v(botid)]=CONNECT [v(#)]
+@set #69=Adisconnect:@pemit [v(botid)]=DISCONNECT [v(#)]
+@set #69=Aunidle:@@ Alas, this one doesn't seem to fire.; @pemit [v(botid)]=UNIDLE #: [v(#)] 0: [v(0)]
+
+@defattr #69/channels=function
+@@ Please note that the UZO ID is hard coded at the end of s_as.;
+@set #69=channels:[setq(1,v(!))][s_as([ifelse(match(v(botid),owner(v(1))),get(v(0),channel),{#-2 Permission denied.})],v(#),#69)]
+@@ A further note about this function, a UZO s_as() requires certain powers, which your average player lacks.;
+@@  The built in security is simply an additional layer to ensure it is ONLY used by the bot, not other Warlords, etc;
+
