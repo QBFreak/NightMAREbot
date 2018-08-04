@@ -1,0 +1,5 @@
+/quote -S /load -q !"ls lib/enabled/*.tf"
+/quote -S /load -q !"ls worlds/enabled/*.world"
+/quote -S /connect !"sbin/enabled_worlds.pl"
+/log_all
+/log -g logs/global.log

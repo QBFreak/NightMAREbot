@@ -1,0 +1,749 @@
+--------------------
+
+Tue Nov 14 20:57:28 EST 2006
+Caller: #5
+Error class: NoMethodError
+Error message: private method `select' called for nil:NilClass
+
+Error stack trace:
+./lib/help.rb:55:in `find'
+./plugins/help.rb:31
+./plugins/help.rb:25:in `call'
+./lib/command.rb:26:in `filter_all'
+./lib/command.rb:24:in `each'
+./lib/command.rb:24:in `filter_all'
+./newsboard_main.rb:68
+/home/nmb/sbin/newsbot/newsboard.rb:34:in `require'
+/home/nmb/sbin/newsbot/newsboard.rb:34
+
+--------------------
+
+Wed Nov 15 05:08:30 EST 2006
+Caller: #5
+Error class: NoMethodError
+Error message: undefined method `inject' for nil:NilClass
+
+Error stack trace:
+./newsboard_main.rb:51
+/home/nmb/sbin/newsbot/newsboard.rb:34:in `require'
+/home/nmb/sbin/newsbot/newsboard.rb:34
+
+--------------------
+
+Wed Nov 15 18:10:12 EST 2006
+Caller: #2663
+Error class: NoMethodError
+Error message: undefined method `read?' for #<NewsItem:0x402cbb50>
+
+Error stack trace:
+./newsboard_main.rb:64
+./newsboard_main.rb:64:in `inject'
+./newsboard_main.rb:64:in `each'
+./newsboard_main.rb:64:in `inject'
+./newsboard_main.rb:64
+/home/nmb/sbin/newsbot/newsboard.rb:38:in `require'
+/home/nmb/sbin/newsbot/newsboard.rb:38
+
+--------------------
+
+Wed Nov 15 23:19:15 EST 2006
+Caller: #5
+Error class: NoMethodError
+Error message: undefined method `locked=' for #<NewsItem:0x402cb40c>
+
+Error stack trace:
+./lib/news_item.rb:130:in `delete'
+./plugins/moderate.rb:115
+./plugins/moderate.rb:97:in `call'
+./lib/command.rb:26:in `filter_all'
+./lib/command.rb:24:in `each'
+./lib/command.rb:24:in `filter_all'
+./newsboard_main.rb:79
+/home/nmb/sbin/newsbot/newsboard.rb:43:in `require'
+/home/nmb/sbin/newsbot/newsboard.rb:43
+
+--------------------
+
+Wed Nov 15 23:21:21 EST 2006
+Caller: #5
+Error class: ArgumentError
+Error message: wrong number of arguments (0 for 1)
+
+Error stack trace:
+./lib/news_item.rb:126:in `delete_at'
+./lib/news_item.rb:126:in `delete'
+./plugins/moderate.rb:115
+./plugins/moderate.rb:97:in `call'
+./lib/command.rb:26:in `filter_all'
+./lib/command.rb:24:in `each'
+./lib/command.rb:24:in `filter_all'
+./newsboard_main.rb:79
+/home/nmb/sbin/newsbot/newsboard.rb:43:in `require'
+/home/nmb/sbin/newsbot/newsboard.rb:43
+
+--------------------
+
+Wed Nov 15 23:22:29 EST 2006
+Caller: #5
+Error class: ArgumentError
+Error message: wrong number of arguments (0 for 1)
+
+Error stack trace:
+./plugins/moderate.rb:118:in `delete_at'
+./plugins/moderate.rb:118
+./plugins/moderate.rb:97:in `call'
+./lib/command.rb:26:in `filter_all'
+./lib/command.rb:24:in `each'
+./lib/command.rb:24:in `filter_all'
+./newsboard_main.rb:79
+/home/nmb/sbin/newsbot/newsboard.rb:43:in `require'
+/home/nmb/sbin/newsbot/newsboard.rb:43
+
+--------------------
+
+Fri Nov 17 00:02:15 EST 2006
+Caller: #5
+Error class: NoMethodError
+Error message: undefined method `num_unread_total' for #<NewsItem:0x402cb4e8>
+
+Error stack trace:
+./newsboard_main.rb:62
+./newsboard_main.rb:62:in `inject'
+./newsboard_main.rb:62:in `each'
+./newsboard_main.rb:62:in `inject'
+./newsboard_main.rb:62
+/home/nmb/sbin/newsbot/newsboard.rb:43:in `require'
+/home/nmb/sbin/newsbot/newsboard.rb:43
+
+--------------------
+
+Fri Nov 17 16:18:22 EST 2006
+Caller: #5
+Error class: NoMethodError
+Error message: undefined method `num_unread_total' for #<NewsItem:0x402cb4e8>
+
+Error stack trace:
+./newsboard_main.rb:62
+./newsboard_main.rb:62:in `inject'
+./newsboard_main.rb:62:in `each'
+./newsboard_main.rb:62:in `inject'
+./newsboard_main.rb:62
+/home/nmb/sbin/newsbot/newsboard.rb:43:in `require'
+/home/nmb/sbin/newsbot/newsboard.rb:43
+
+--------------------
+
+Fri Nov 17 16:22:57 EST 2006
+Caller: #5
+Error class: NoMethodError
+Error message: undefined method `num_unread_total' for #<NewsItem:0x402cb4e8>
+
+Error stack trace:
+./newsboard_main.rb:62
+./newsboard_main.rb:62:in `inject'
+./newsboard_main.rb:62:in `each'
+./newsboard_main.rb:62:in `inject'
+./newsboard_main.rb:62
+/home/nmb/sbin/newsbot/newsboard.rb:43:in `require'
+/home/nmb/sbin/newsbot/newsboard.rb:43
+
+--------------------
+
+Sat Nov 18 00:31:22 EST 2006
+Caller: #5
+Error class: NoMethodError
+Error message: undefined method `num_unread_total' for #<NewsItem:0x402cb4e8>
+
+Error stack trace:
+./newsboard_main.rb:62
+./newsboard_main.rb:62:in `inject'
+./newsboard_main.rb:62:in `each'
+./newsboard_main.rb:62:in `inject'
+./newsboard_main.rb:62
+/home/nmb/sbin/newsbot/newsboard.rb:43:in `require'
+/home/nmb/sbin/newsbot/newsboard.rb:43
+
+--------------------
+
+Sat Nov 18 16:47:47 EST 2006
+Caller: #5
+Error class: NameError
+Error message: undefined local variable or method `num_times_edit' for #<NewsItem:0x402c9580>
+
+Error stack trace:
+./lib/news_item.rb:81:in `display'
+./plugins/read.rb:24
+./plugins/read.rb:24:in `initialize'
+./plugins/read.rb:24:in `new'
+./plugins/read.rb:24
+./plugins/read.rb:17:in `call'
+./lib/command.rb:26:in `filter_all'
+./lib/command.rb:24:in `each'
+./lib/command.rb:24:in `filter_all'
+./newsboard_main.rb:87
+/home/nmb/sbin/newsbot/newsboard.rb:47:in `require'
+/home/nmb/sbin/newsbot/newsboard.rb:47
+
+--------------------
+
+Sat Nov 18 20:39:12 EST 2006
+Caller: #5
+Error class: NoMethodError
+Error message: undefined method `get_news_from' for #<Command:0x403469bc>
+
+Error stack trace:
+./plugins/show_news.rb:86
+./plugins/show_news.rb:85:in `call'
+./lib/command.rb:26:in `filter_all'
+./lib/command.rb:24:in `each'
+./lib/command.rb:24:in `filter_all'
+./newsboard_main.rb:87
+/home/nmb/sbin/newsbot/newsboard.rb:47:in `require'
+/home/nmb/sbin/newsbot/newsboard.rb:47
+
+--------------------
+
+Sat Nov 18 20:45:33 EST 2006
+Caller: #5
+Error class: NameError
+Error message: uninitialized constant NewMessage
+
+Error stack trace:
+./plugins/show_news.rb:69
+./plugins/show_news.rb:68:in `call'
+./lib/command.rb:26:in `filter_all'
+./lib/command.rb:24:in `each'
+./lib/command.rb:24:in `filter_all'
+./newsboard_main.rb:87
+/home/nmb/sbin/newsbot/newsboard.rb:47:in `require'
+/home/nmb/sbin/newsbot/newsboard.rb:47
+
+--------------------
+
+Sat Nov 18 21:28:06 EST 2006
+Caller: #5
+Error class: SyntaxError
+Error message: ./plugins/moderate.rb:156: syntax error
+		next NewsMessage.new{|n| n.message = "This already appears to be the state of affairs."} unless (turn_on == $DATA[:stickies].include? post)
+		                                                                                                                                          ^
+
+Error stack trace:
+./lib/command.rb:18:in `require'
+./lib/command.rb:18:in `load'
+./lib/command.rb:17:in `each'
+./lib/command.rb:17:in `load'
+./newsboard_main.rb:65
+/home/nmb/sbin/newsbot/newsboard.rb:47:in `require'
+/home/nmb/sbin/newsbot/newsboard.rb:47
+
+--------------------
+
+Sat Nov 18 21:29:01 EST 2006
+Caller: #5
+Error class: NoMethodError
+Error message: undefined method `include?' for #<NewsBase:0x402c86f8 @children=[]>
+
+Error stack trace:
+./plugins/moderate.rb:156
+./plugins/moderate.rb:151:in `call'
+./lib/command.rb:26:in `filter_all'
+./lib/command.rb:24:in `each'
+./lib/command.rb:24:in `filter_all'
+./newsboard_main.rb:89
+/home/nmb/sbin/newsbot/newsboard.rb:47:in `require'
+/home/nmb/sbin/newsbot/newsboard.rb:47
+
+--------------------
+
+Sat Nov 18 21:39:48 EST 2006
+Caller: #5
+Error class: NoMethodError
+Error message: undefined method `reverse' for #<NewsBase:0x402c86f8>
+
+Error stack trace:
+./plugins/show_news.rb:34:in `prefix'
+./plugins/show_news.rb:56
+./plugins/show_news.rb:56:in `initialize'
+./plugins/show_news.rb:56:in `new'
+./plugins/show_news.rb:56
+./plugins/show_news.rb:55:in `call'
+./lib/command.rb:26:in `filter_all'
+./lib/command.rb:24:in `each'
+./lib/command.rb:24:in `filter_all'
+./newsboard_main.rb:87
+/home/nmb/sbin/newsbot/newsboard.rb:47:in `require'
+/home/nmb/sbin/newsbot/newsboard.rb:47
+
+--------------------
+
+Sat Nov 18 21:40:27 EST 2006
+Caller: #5
+Error class: NameError
+Error message: uninitialized constant Constants::DIVIDER
+
+Error stack trace:
+./plugins/show_news.rb:34:in `prefix'
+./plugins/show_news.rb:56
+./plugins/show_news.rb:56:in `initialize'
+./plugins/show_news.rb:56:in `new'
+./plugins/show_news.rb:56
+./plugins/show_news.rb:55:in `call'
+./lib/command.rb:26:in `filter_all'
+./lib/command.rb:24:in `each'
+./lib/command.rb:24:in `filter_all'
+./newsboard_main.rb:87
+/home/nmb/sbin/newsbot/newsboard.rb:47:in `require'
+/home/nmb/sbin/newsbot/newsboard.rb:47
+
+--------------------
+
+Sat Nov 18 21:52:45 EST 2006
+Caller: #5
+Error class: NoMethodError
+Error message: undefined method `short_display' for nil:NilClass
+
+Error stack trace:
+./plugins/show_news.rb:8:in `display_news'
+./plugins/show_news.rb:8:in `map'
+./plugins/show_news.rb:8:in `display_news'
+./plugins/show_news.rb:34:in `prefix'
+./plugins/show_news.rb:55
+./plugins/show_news.rb:55:in `initialize'
+./plugins/show_news.rb:55:in `new'
+./plugins/show_news.rb:55
+./plugins/show_news.rb:54:in `call'
+./lib/command.rb:26:in `filter_all'
+./lib/command.rb:24:in `each'
+./lib/command.rb:24:in `filter_all'
+./newsboard_main.rb:90
+/home/nmb/sbin/newsbot/newsboard.rb:47:in `require'
+/home/nmb/sbin/newsbot/newsboard.rb:47
+
+--------------------
+
+Sat Nov 18 21:54:04 EST 2006
+Caller: #5
+Error class: NoMethodError
+Error message: undefined method `to_i' for [2]:Array
+
+Error stack trace:
+./plugins/show_news.rb:34:in `prefix'
+./plugins/show_news.rb:34:in `map'
+./plugins/show_news.rb:34:in `prefix'
+./plugins/show_news.rb:55
+./plugins/show_news.rb:55:in `initialize'
+./plugins/show_news.rb:55:in `new'
+./plugins/show_news.rb:55
+./plugins/show_news.rb:54:in `call'
+./lib/command.rb:26:in `filter_all'
+./lib/command.rb:24:in `each'
+./lib/command.rb:24:in `filter_all'
+./newsboard_main.rb:90
+/home/nmb/sbin/newsbot/newsboard.rb:47:in `require'
+/home/nmb/sbin/newsbot/newsboard.rb:47
+
+--------------------
+
+Sat Nov 18 21:55:32 EST 2006
+Caller: #5
+Error class: NoMethodError
+Error message: undefined method `short_display' for nil:NilClass
+
+Error stack trace:
+./plugins/show_news.rb:8:in `display_news'
+./plugins/show_news.rb:8:in `map'
+./plugins/show_news.rb:8:in `display_news'
+./plugins/show_news.rb:34:in `prefix'
+./plugins/show_news.rb:55
+./plugins/show_news.rb:55:in `initialize'
+./plugins/show_news.rb:55:in `new'
+./plugins/show_news.rb:55
+./plugins/show_news.rb:54:in `call'
+./lib/command.rb:26:in `filter_all'
+./lib/command.rb:24:in `each'
+./lib/command.rb:24:in `filter_all'
+./newsboard_main.rb:90
+/home/nmb/sbin/newsbot/newsboard.rb:47:in `require'
+/home/nmb/sbin/newsbot/newsboard.rb:47
+
+--------------------
+
+Sat Nov 18 21:59:20 EST 2006
+Caller: #5
+Error class: NoMethodError
+Error message: undefined method `<' for [2]:Array
+
+Error stack trace:
+./lib/tree.rb:84:in `traverse'
+./lib/util.rb:15:in `get_post'
+./plugins/show_news.rb:34:in `prefix'
+./plugins/show_news.rb:34:in `map'
+./plugins/show_news.rb:34:in `prefix'
+./plugins/show_news.rb:55
+./plugins/show_news.rb:55:in `initialize'
+./plugins/show_news.rb:55:in `new'
+./plugins/show_news.rb:55
+./plugins/show_news.rb:54:in `call'
+./lib/command.rb:26:in `filter_all'
+./lib/command.rb:24:in `each'
+./lib/command.rb:24:in `filter_all'
+./newsboard_main.rb:90
+/home/nmb/sbin/newsbot/newsboard.rb:47:in `require'
+/home/nmb/sbin/newsbot/newsboard.rb:47
+
+--------------------
+
+Sat Nov 18 23:27:10 EST 2006
+Caller: #5
+Error class: NoMethodError
+Error message: undefined method `num_unread_total' for #<NewsItem:0x402c8ec8>
+
+Error stack trace:
+./newsboard_main.rb:75
+./newsboard_main.rb:75:in `inject'
+./newsboard_main.rb:75:in `each'
+./newsboard_main.rb:75:in `inject'
+./newsboard_main.rb:75
+/home/nmb/sbin/newsbot/newsboard.rb:47:in `require'
+/home/nmb/sbin/newsbot/newsboard.rb:47
+
+--------------------
+
+Sun Nov 19 02:35:59 EST 2006
+Caller: #5
+Error class: NoMethodError
+Error message: undefined method `includes?' for [true, false]:Array
+
+Error stack trace:
+./lib/news_item.rb:32:in `sticky='
+./plugins/moderate.rb:157
+./plugins/moderate.rb:150:in `call'
+./lib/command.rb:26:in `filter_all'
+./lib/command.rb:24:in `each'
+./lib/command.rb:24:in `filter_all'
+./newsboard_main.rb:92
+/home/nmb/sbin/newsbot/newsboard.rb:47:in `require'
+/home/nmb/sbin/newsbot/newsboard.rb:47
+
+--------------------
+
+Mon Nov 20 16:26:46 EST 2006
+Caller: #5
+Error class: NoMethodError
+Error message: undefined method `<' for 1..-2:Range
+
+Error stack trace:
+./lib/tree.rb:84:in `traverse'
+./lib/util.rb:15:in `get_post'
+./lib/news_parent.rb:23:in `parent'
+./plugins/moderate.rb:103
+./plugins/moderate.rb:97:in `call'
+./lib/command.rb:26:in `filter_all'
+./lib/command.rb:24:in `each'
+./lib/command.rb:24:in `filter_all'
+./newsboard_main.rb:92
+/home/nmb/sbin/newsbot/newsboard.rb:47:in `require'
+/home/nmb/sbin/newsbot/newsboard.rb:47
+
+--------------------
+
+Mon Nov 20 16:30:35 EST 2006
+Caller: #5
+Error class: ArgumentError
+Error message: Post not found
+
+Error stack trace:
+./lib/news_parent.rb:34:in `delete'
+./plugins/moderate.rb:103
+./plugins/moderate.rb:97:in `call'
+./lib/command.rb:26:in `filter_all'
+./lib/command.rb:24:in `each'
+./lib/command.rb:24:in `filter_all'
+./newsboard_main.rb:92
+/home/nmb/sbin/newsbot/newsboard.rb:47:in `require'
+/home/nmb/sbin/newsbot/newsboard.rb:47
+
+--------------------
+
+Mon Nov 20 17:27:13 EST 2006
+Caller: #5
+Error class: ArgumentError
+Error message: Post not found
+
+Error stack trace:
+./lib/news_parent.rb:25:in `delete'
+./plugins/moderate.rb:103
+./plugins/moderate.rb:97:in `call'
+./lib/command.rb:26:in `filter_all'
+./lib/command.rb:24:in `each'
+./lib/command.rb:24:in `filter_all'
+./newsboard_main.rb:92
+/home/nmb/sbin/newsbot/newsboard.rb:47:in `require'
+/home/nmb/sbin/newsbot/newsboard.rb:47
+
+--------------------
+
+Mon Nov 20 18:37:52 EST 2006
+Caller: #5
+Error class: ArgumentError
+Error message: Post not found
+
+Error stack trace:
+./lib/news_parent.rb:27:in `delete'
+./plugins/moderate.rb:103
+./plugins/moderate.rb:97:in `call'
+./lib/command.rb:26:in `filter_all'
+./lib/command.rb:24:in `each'
+./lib/command.rb:24:in `filter_all'
+./newsboard_main.rb:92
+/home/nmb/sbin/newsbot/newsboard.rb:47:in `require'
+/home/nmb/sbin/newsbot/newsboard.rb:47
+
+--------------------
+
+Wed Nov 22 03:35:56 EST 2006
+Caller: #5
+Error class: NoMethodError
+Error message: undefined method `inject' for #<NewsBase:0x402c7d34>
+
+Error stack trace:
+./plugins/status.rb:17
+./plugins/status.rb:16:in `call'
+./lib/command.rb:26:in `filter_all'
+./lib/command.rb:24:in `each'
+./lib/command.rb:24:in `filter_all'
+./newsboard_main.rb:92
+/home/nmb/sbin/newsbot/newsboard.rb:47:in `require'
+/home/nmb/sbin/newsbot/newsboard.rb:47
+
+--------------------
+
+Wed Nov 22 03:37:30 EST 2006
+Caller: #5
+Error class: ArgumentError
+Error message: wrong number of arguments (0 for 1)
+
+Error stack trace:
+./plugins/status.rb:17:in `num_unread_replies'
+./plugins/status.rb:17
+./plugins/status.rb:17:in `inject'
+./plugins/status.rb:17:in `each'
+./plugins/status.rb:17:in `inject'
+./plugins/status.rb:17
+./plugins/status.rb:16:in `call'
+./lib/command.rb:26:in `filter_all'
+./lib/command.rb:24:in `each'
+./lib/command.rb:24:in `filter_all'
+./newsboard_main.rb:92
+/home/nmb/sbin/newsbot/newsboard.rb:47:in `require'
+/home/nmb/sbin/newsbot/newsboard.rb:47
+
+--------------------
+
+Wed Nov 22 17:01:00 EST 2006
+Caller: #1534
+Error class: NoMethodError
+Error message: undefined method `map' for nil:NilClass
+
+Error stack trace:
+./plugins/help.rb:32
+./plugins/help.rb:32:in `initialize'
+./plugins/help.rb:32:in `new'
+./plugins/help.rb:32
+./plugins/help.rb:25:in `call'
+./lib/command.rb:26:in `filter_all'
+./lib/command.rb:24:in `each'
+./lib/command.rb:24:in `filter_all'
+./newsboard_main.rb:92
+/home/nmb/sbin/newsbot/newsboard.rb:47:in `require'
+/home/nmb/sbin/newsbot/newsboard.rb:47
+
+--------------------
+
+Wed Nov 22 17:01:30 EST 2006
+Caller: #1534
+Error class: NoMethodError
+Error message: undefined method `map' for nil:NilClass
+
+Error stack trace:
+./plugins/help.rb:32
+./plugins/help.rb:32:in `initialize'
+./plugins/help.rb:32:in `new'
+./plugins/help.rb:32
+./plugins/help.rb:25:in `call'
+./lib/command.rb:26:in `filter_all'
+./lib/command.rb:24:in `each'
+./lib/command.rb:24:in `filter_all'
+./newsboard_main.rb:92
+/home/nmb/sbin/newsbot/newsboard.rb:47:in `require'
+/home/nmb/sbin/newsbot/newsboard.rb:47
+
+--------------------
+
+Wed Nov 22 20:10:23 EST 2006
+Caller: #9428
+Error class: NoMethodError
+Error message: undefined method `+' for nil:NilClass
+
+Error stack trace:
+./newsboard_main.rb:77
+./newsboard_main.rb:77:in `inject'
+./newsboard_main.rb:77:in `each'
+./newsboard_main.rb:77:in `inject'
+./newsboard_main.rb:77
+/home/nmb/sbin/newsbot/newsboard.rb:47:in `require'
+/home/nmb/sbin/newsbot/newsboard.rb:47
+
+--------------------
+
+Wed Nov 22 20:52:58 EST 2006
+Caller: #9428
+Error class: NoMethodError
+Error message: undefined method `+' for nil:NilClass
+
+Error stack trace:
+./newsboard_main.rb:77
+./newsboard_main.rb:77:in `inject'
+./newsboard_main.rb:77:in `each'
+./newsboard_main.rb:77:in `inject'
+./newsboard_main.rb:77
+/home/nmb/sbin/newsbot/newsboard.rb:47:in `require'
+/home/nmb/sbin/newsbot/newsboard.rb:47
+
+--------------------
+
+Thu Nov 23 01:18:39 EST 2006
+Caller: #8512
+Error class: NameError
+Error message: uninitialized constant Constants::ERR_NO_POST
+
+Error stack trace:
+./plugins/read.rb:19
+./plugins/read.rb:17:in `call'
+./lib/command.rb:26:in `filter_all'
+./lib/command.rb:24:in `each'
+./lib/command.rb:24:in `filter_all'
+./newsboard_main.rb:92
+/home/nmb/sbin/newsbot/newsboard.rb:47:in `require'
+/home/nmb/sbin/newsbot/newsboard.rb:47
+
+--------------------
+
+Thu Nov 23 05:06:18 EST 2006
+Caller: #5
+Error class: NoMethodError
+Error message: undefined method `Constants' for #<Command:0x402c429c>
+
+Error stack trace:
+./plugins/mark_read.rb:27
+./plugins/mark_read.rb:18:in `call'
+./lib/command.rb:26:in `filter_all'
+./lib/command.rb:24:in `each'
+./lib/command.rb:24:in `filter_all'
+./newsboard_main.rb:92
+/home/nmb/sbin/newsbot/newsboard.rb:47:in `require'
+/home/nmb/sbin/newsbot/newsboard.rb:47
+
+--------------------
+
+Thu Nov 23 05:07:36 EST 2006
+Caller: #5
+Error class: NoMethodError
+Error message: undefined method `Constants' for #<Command:0x402c429c>
+
+Error stack trace:
+./plugins/mark_read.rb:27
+./plugins/mark_read.rb:18:in `call'
+./lib/command.rb:26:in `filter_all'
+./lib/command.rb:24:in `each'
+./lib/command.rb:24:in `filter_all'
+./newsboard_main.rb:92
+/home/nmb/sbin/newsbot/newsboard.rb:47:in `require'
+/home/nmb/sbin/newsbot/newsboard.rb:47
+
+--------------------
+
+Thu Nov 23 05:08:30 EST 2006
+Caller: #5
+Error class: NoMethodError
+Error message: undefined method `Constants' for #<Command:0x402c429c>
+
+Error stack trace:
+./plugins/mark_read.rb:27
+./plugins/mark_read.rb:18:in `call'
+./lib/command.rb:26:in `filter_all'
+./lib/command.rb:24:in `each'
+./lib/command.rb:24:in `filter_all'
+./newsboard_main.rb:92
+/home/nmb/sbin/newsbot/newsboard.rb:47:in `require'
+/home/nmb/sbin/newsbot/newsboard.rb:47
+
+--------------------
+
+Thu Nov 23 05:12:30 EST 2006
+Caller: #5
+Error class: NoMethodError
+Error message: undefined method `Constants' for #<Command:0x402c429c>
+
+Error stack trace:
+./plugins/mark_read.rb:27
+./plugins/mark_read.rb:18:in `call'
+./lib/command.rb:26:in `filter_all'
+./lib/command.rb:24:in `each'
+./lib/command.rb:24:in `filter_all'
+./newsboard_main.rb:92
+/home/nmb/sbin/newsbot/newsboard.rb:47:in `require'
+/home/nmb/sbin/newsbot/newsboard.rb:47
+
+--------------------
+
+Sat Nov 25 23:25:11 EST 2006
+Caller: #5
+Error class: NoMethodError
+Error message: undefined method `has_key?' for nil:NilClass
+
+Error stack trace:
+./lib/help.rb:55:in `find'
+./plugins/help.rb:27
+./plugins/help.rb:25:in `call'
+./lib/command.rb:26:in `filter_all'
+./lib/command.rb:24:in `each'
+./lib/command.rb:24:in `filter_all'
+./newsboard_main.rb:92
+/home/nmb/sbin/newsbot/newsboard.rb:47:in `require'
+/home/nmb/sbin/newsbot/newsboard.rb:47
+
+--------------------
+
+Sat Nov 25 23:25:48 EST 2006
+Caller: #5
+Error class: NoMethodError
+Error message: undefined method `size' for #<Command:0x402bf92c>
+
+Error stack trace:
+./plugins/help.rb:28
+./plugins/help.rb:25:in `call'
+./lib/command.rb:26:in `filter_all'
+./lib/command.rb:24:in `each'
+./lib/command.rb:24:in `filter_all'
+./newsboard_main.rb:92
+/home/nmb/sbin/newsbot/newsboard.rb:47:in `require'
+/home/nmb/sbin/newsbot/newsboard.rb:47
+
+--------------------
+
+Mon Nov 27 04:24:06 EST 2006
+Caller: #5
+Error class: SyntaxError
+Error message: ./plugins/status.rb:27: syntax error
+./plugins/status.rb:49: syntax error
+
+Error stack trace:
+./lib/command.rb:18:in `require'
+./lib/command.rb:18:in `load'
+./lib/command.rb:17:in `each'
+./lib/command.rb:17:in `load'
+./newsboard_main.rb:75
+/home/nmb/sbin/newsbot/newsboard.rb:49:in `require'
+/home/nmb/sbin/newsbot/newsboard.rb:49
+

@@ -1,0 +1,5 @@
+prefix: '['
+suffix: ']'
+# Uncomment to override prefix and suffix with identical single character
+# marker: '#'
+

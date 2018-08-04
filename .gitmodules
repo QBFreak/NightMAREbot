@@ -1,0 +1,3 @@
+[submodule "sbin/epigram-simple"]
+	path = sbin/epigram-simple
+	url = git@gitlab.com:QBFreak/epigram-simple.git
