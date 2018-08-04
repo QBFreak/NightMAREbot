@@ -1,0 +1,59 @@
+@@ Common Command Handler v2.0
+
+@defattr me/namesubst=function
+@defattr me/namesubstcp=function
+
+@@ Format: command1~response1~response2`command2~response
+@defattr me/commandlist=function
+
+@defattr me/cmd_addcmd
+@defattr me/cmd_listcmd
+@defattr me/cmd_delcmd
+
+@defattr me/cmd_addresponse
+@defattr me/cmd_listresponse
+@defattr me/cmd_delresponse
+
+@@  Channel: [v(0)]  Name: [v(1)]  Command: [first(v(2))] Params: [rest(v(2))]
+
+@@ namesubst(Name, Param)
+@@  If Param is empty, return Name
+@@  If Param can be expanded to a proper Player name, return that
+@@  Otherwise, return Param
+@Set me=Namesubst:[ifelse(strlen(v(1)),iftrue(name(strcat(*,v(1))),v(1)),v(0))]
+
+@@ namesubstcp(Name, CommandParam)
+@@  <CommandParam> is a multi-word string where the first word is the invoking command and should be ignored
+@@    The remainder is the Param we're looking for
+@@  If Param is empty, return Name
+@@  If Param can be expanded to a proper Player name, return that
+@@  Otherwise, return Param
+@Set me=Namesubst:[ifelse(strlen(rest(v(1))),iftrue(name(strcat(*,rest(v(1)))),rest(v(1))),v(0))]
+
+
+#mupdate on
+@set me=Cmd_addcmd:^addcmd:@switch wcount(v(0))=0,{
+		@pemit %#=Usage: addcmd [name(me)]=command;
+	},1,{
+		@switch [wmatch(commandlist(),strcat(v(0),~),`)]=0,{
+			@set me=Commandlist:[insert(commandlist(),inc(wcount(commandlist(),`)),strcat(v(0),~),`)];
+		},{
+			@pemit %# The command [v(0)] already exists.;
+		};
+	},{
+		@pemit %#=The command name cannot contain spaces.;
+	};
+.
+@set me=Cmd_addresponse:^addresp:@switch lt(wcount(v(0)),2)=1,{
+		@pemit %#=Usage: addresp [name(me)]=command response;
+	},{
+		@switch [wmatch(commandlist(),strcat(first(v(0)),~),`)]=0,{
+			@set me=Commandlist:[insert(commandlist(),inc(wcount(commandlist(),`)),strcat(first(v(0)),~,),`)];
+			@pemit %#=Added new command [first(v(0))] with response [rest(v(0))];
+		},{
+			@set me=Commandlist:[insert(commandlist(),inc(wcount(commandlist(),`)),strcat(first(v(0)),~,),`)];
+			@pemit %#=Updated command [first(v(0))] to include response [rest(v(0))];
+		};
+	};
+.
+#mupdate off

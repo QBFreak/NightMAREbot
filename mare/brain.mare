@@ -1,0 +1,186 @@
+@@ NightMAREBot's Brain v1.1
+@@ - Cleaned up unused attrs
+@@ - Removed broken and unfinished code
+@@ - Removed upfront() check for short dbrefs
+@@ = Brain(#7) - SolarWindsMARE
+
+@@ Parents
+@@addparent Brain=Cron Parent
+
+@@ Flags
+@set Brain=Visible
+
+
+@@ Attribute Defs @@
+
+@@ Channel processing
+@defattr Brain/chancmd
+@defattr Brain/chancmdtf
+@defattr Brain/chancode
+
+@@ Event listeners
+@defattr Brain/listen_connect
+@defattr Brain/listen_disconnect
+@defattr Brain/listen_unidle
+@defattr Brain/ignorelist=function
+
+@@ Support commands
+@defattr Brain/bot_cmd
+@defattr Brain/send_chan
+@defattr Brain/send_page
+
+@@ Support functions
+@defattr Brain/isguest=function
+@defattr Brain/message=function
+@defattr Brain/lastdiscon=function
+@defattr Brain/lastdisconf=function
+
+@defattr Brain/botid=function
+@@ SolarWindsMARE
+@@set Brain=botid:#3
+@@ PiMARE
+@@set Brain=botid:#10
+@@ FreeMARE
+@@set Brain=botid:2626
+
+@defattr Brain/ploggerid=function
+@@ SolarWindsMARE
+@@set Brain=ploggerid:#11
+
+
+@@ Event Listeners @@
+#mupdate on
+@set Brain=listen_connect:!CONNECT *:/[land(isdbref(pnum(v(0))),isdbref(v(0)))]/
+@@ The lock ensures that v(0) a dbref and a player;
+	@@ Check and see if the player is on the ignore list;
+	@switch [not(truth(wmatch(ignorelist(),v(0))))]=1,{
+		@@ Check and see if we're on the player's primary channel;
+		@switch [truth(wmatch(channels(v(botid)),first(channels(v(0)))))]=1,{
+			@@ Check and see if they disconnected within the last hour;
+			@switch [match(right(lastdisconf(v(0)),1),m)]=1,{
+				@emit Welcome back [unparse(v(0))];
+			};
+		};
+	};
+.
+
+@set Brain=listen_disconnect:!DISCONNECT *:/[land(isdbref(pnum(v(0))),isdbref(v(0)))]/
+@@ The lock ensures that v(0) a dbref and a player;
+	@@ Check and see if the player is on the ignore list;
+	@switch [not(truth(wmatch(ignorelist(),v(0))))]=1,{
+		@@ Check and see if we're on the player's primary channel;
+		@switch [truth(wmatch(channels(v(botid)),first(channels(v(0)))))]=1,{
+			@@ Check and see if they connected within the last hour;
+			@switch [match(right(lastdisconf(v(0)),1),m)]=1,{
+				@emit Bye, [unparse(v(0))]!;
+			};
+		};
+	};
+.
+#mupdate off
+
+@@ Channel Processing Commands @@
+
+@@ For interfacing with other MARE-code modules
+@set Brain=chancmd:$procchan *=*:@tr me/chancode=%0,%1
+
+@@ For interfacing with TinyFugue
+@set Brain=chancmdtf:$procchan [*] *: @tr me/chancode=%0,%1
+
+@@ Channel processing - %0 = channel, %1 = remainder
+#mupdate on
+@set Brain=chancode:
+	@@ HOW IS THIS WORKING? TF must be eating the [];
+	@switch [match(v(1),* to NightMAREbot : *)]=1,{
+		bot_cmd [v(0)] [first(first(v(1)),:)] [extract(v(1),5,wcount(v(1)))];
+	};
+	
+	@switch [match(left(first(message(v(1))),1),\!)]=1,{
+		bot_cmd [v(0)] [first(first(v(1)),:)] [rest(message(v(1)),!)]
+	};
+	
+	@@ BROKEN!;
+	@switch [regmatch(v(1),* blames *,1)]=1,{
+    	@switch [switch(v(2),name(botid()),1,get(botid(),alias),1)]=1,{
+    		@wait 1={send_chan [v(0)] :blames Honor;};
+    	};
+    };
+    
+	@switch [truth(wmatch(v(1),myspace)_]=1,{
+		@wait 1=send_chan [v(0)] :hateses the evil myspace!;
+	};
+	
+    @switch [regmatch(trim(trim(edit(v(1),',),R,.),R,!),* its all *s fault*,1)]=1,{
+    	@switch [switch(v(2),name(botid()),1,get(botid(),alias),1,the bot,1)]=1,{
+    		@wait 1=send_chan [v(0)] :blames [randword(Honor *QBFreak *Mortal *Wizard)];
+    	},{
+    		@wait 1=send_chan [v(0)] [setq(2,ifelse(isdbref(pnum(v(2))),strcat(*,v(2)),v(2)))][s(randword({Yes. Yes it is.~Makes a note in the official record, "It is all [v(2)] 's fault."~:patpats [v(2)]},~))];
+    	};
+    };
+    
+	@switch [match(v(1),* sticks * tongue out*)]=1,{
+		@wait [rand(6)]=send_chan [v(0)] [randword(How rude~'[first(first(v(1)),<)] tthhbbtt!,~)];
+	};
+
+	@switch [match(v(1),Swingerzetta shake* fist*)]=1,{
+		@wait [rand(6)]=send_chan [v(0)] [randword({'swing Give me that!~:rolls his eyes~:loudly sings "shake your bo-- wait, wrong thing"~don't make me come over there!},~)];
+	};
+
+	@switch [gt(wmatch(v(1),ocelot),0)]=1,{
+		@wait [rand(6)]=send_chan [v(0)] [randword({:purrs~nice kitty!~meow!},~)];
+	};
+
+	@switch [match(v(1),{Harena <Pyrotechnic Ferret>:})=1,{
+		@wait [rand(6)]=send_chan [v(0)] [s(randword({Do you smell something burning?~Woo! [config(MUD_NAME)] is on FIRE!~:rubs his singed eyebrows},~))];
+	};
+.
+#mupdate off
+
+
+@@ Support Commands @@
+
+@@ Dummy handler for messages directed at the bot
+@@ This command is actually intended to be fired by this object,
+@@ however in the event that nothing else provides this command
+@@ it is provided here.
+@set Brain=bot_cmd:$bot_cmd * *:@@this is a dummy handler to avoid errors
+
+@@ Channel send command for other objects to use
+@@set Brain=send_chan:$send_chan * *:@fo [v(botid)]=+com [v(0)]=[v(1)]
+@set Brain=send_chan:$send_chan * *:@fo [v(botid)]=@switch [comcname_installed()]=1,{com [v(0)]={[v(1)]}},{+com [v(0)]={[v(1)]}}
+
+@@ Page send command for other objects to use
+@set Brain=send_page:$send_page * *:@fo [v(botid)]=p [v(0)]=[v(1)]
+
+
+@@ Support functions @@
+
+@@ Identifies a player as a guest
+@set Brain=isguest:[land(wmatch(name(v(0)),strcat(config(guest_prefix),*)),hasflag(pnum(v(0)),P)]
+
+@@ Extracts the message portion from a regular channel message
+@set Brain=message:[extract(v(0),iftrue(inc(iftrue(match(right(first(v(0)),1),:),iftrue(wmatch(v(0),*>:),-1))),2),wcount(v(0)))]
+
+@@ Gets the last disconnect time for a player from the Player Logger, returns nothing if time is not logged
+@set Brain=lastdiscon:[extract(extract(get(ploggerid(),conlog),wmatch(get(ploggerid(),conlog),strcat(D*~,v(0))),1),2,1,~)]
+
+@@ Formats the last disconnect time for a player
+@set Brain=lastdisconf:[if(lastdiscon(v(0)),tms(sub(xtime(),lastdiscon(v(0)))))]
+
+
+
+@@ Automatic Configuration @@
+#mupdate on
+@fo me={
+	@switch [isdbref(s(get(Brain,botid)))]=0,{
+		@switch [isdbref(pnum(*NightMAREbot))]=1,{
+			@set Brain=botid:[pnum(*nmb)];
+			@emit [ansi(g+,Set @botid to ID of)] [unparse(*NightMAREbot)];
+		},{
+			@emit [ansi(r+,ERROR: @botid is not set and cannot locate NightMAREbot. Please set @botid to the #dbref of the player to @force for the +com commands.)];
+		}
+	};
+}
+.
+#mupdate off
+

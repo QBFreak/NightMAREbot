@@ -1,0 +1,52 @@
+@@ --- Define attributes --- @@
+
+@@ Commands
+@defattr Intermare router/intermarecmd
+
+@@ Generic functions
+@defattr Intermare router/iflen=function
+
+@@ Player information
+@defattr Intermare router/colors
+@defattr Intermare router/cnames
+
+@@ Player info functions
+@defattr Intermare router/icolor=function
+@defattr Intermare router/icname=function
+
+@@ Player info code
+@defattr Intermare router/colorcheck
+
+
+@@ --- Set attributes --- @@
+
+@@ Built-in attributes
+@set Intermare router=Alias:router
+@set Intermare router=Ulock:#2484|#2663
+@set Intermare router=Lock:#2484|#2663
+
+@@ Commands
+@set Intermare router=intermarecmd:$intermare *:@cemit intermare=v(0)
+
+@@ Generic functions
+@set Intermare router=iflen:[ifelse(land(strlen(v(0)),not(match(v(0),#-1))),v(0),v(1))]
+
+@@ Player information
+@set Intermare router=colors:test=3 JayNye=11 qbfrea=5
+@set Intermare router=cnames:JayNye=14:3,15:3
+
+@@ Player info functions
+@set Intermare router=icolor:[iflen(get(strcat(*,v(0)),color),iflen(rest(extract(v(colors),wmatch(v(colors),strcat(v(0),=*)),1),=),-1))]
+@set Intermare router=icname:[iftrue(cname(strcat(*,v(0))),ansi(icolor(v(0)),v(0)))]
+
+@@ Player info code
+@set Intermare router=colorcheck:@switch icolor(v(0))=-1,{@colors me=[v(colors)] [v(0)]=[randword(lnum(16))]}
+
+
+@@ For interfacing with other MARE-code modules
+@defattr Intermare router/chancmd
+@set Intermare router=chancmd:$procchan *=*:@emit @@chancmd 0=%0 1=%1
+
+@@ For interfacing with TinyFugue
+@defattr Intermare router/chancmdtf
+@set Intermare router=chancmdtf:$procchan [*] *:@emit @@chancmdtf 0=%0 1=%1

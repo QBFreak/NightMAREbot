@@ -1,0 +1,19 @@
+@@ NightMAREbot Proxy Notice v1.1
+@@  Updated to use 
+
+@defattr Proxy Notice/procchan
+@defattr Proxy Notice/sitelockid=lock
+
+@set Proxy Notice=color:9
+@set Proxy Notice=sitelockid:#19718
+
+#mupdate on
+@set Proxy Notice=procchan:$procchan [_log_io] *:
+	@switch regmatch(v(0),Failed connect *: GET * from *. desc->*)=1,{
+		@@ 0-CID 1-URL 2-HOST 3-DESC;
+		@cemit _log_io=Proxy attempt detected from host \[v(2)], 30-day sitelock level 3 (Login) set.;
+		@sitelock \[v(2)]=3;
+		@tr [v(sitelockid)]/additem=\[v(2)];
+	}
+.
+#mupdate off

@@ -1,0 +1,41 @@
+@@ NightMAREbot v2.01
+@@ - Cleaned up for use on SolarWindsMARE
+@@ - Watch out, some attributes have changed names since SluggyMARE
+@@ = NightMAREbot(#3Pc) - SolarWindsMARE
+
+@@ Parents: Cron Parent
+
+@addparent NightMAREbot=Cron Parent
+
+@@ Need a Wizard to set these flags
+@@set NightMAREbot=Builder Connected Inactive_Ok
+
+@@ Unidle players
+@defattr NightMAREbot/unidlewho=function
+@defattr NightMAREbot/unidlemax
+
+@@ Misc code
+@defattr NightMAREbot/checkqb
+
+@@ Player customization
+@set NightMAREbot=Alias:nmb
+@set NightMAREbot=Caption:friend of all
+@set NightMAREbot=Cname:8:5,5:4,6:3
+@set NightMAREbot=Color:15
+@set NightMAREbot=Desc:Your friendly neighborhood bot
+@set NightMAREbot=Doing:[ifelse(eq(timefmt(m),11),last(upfront(),#),s(Now Serving [upfront()]))]
+@set NightMAREbot=Email:nightmarebot@qbfreak.net
+@set NightMAREbot=Notify:all
+@set NightMAREbot=Plock:[0]
+@set NightMAREbot=Rlname:NightMARE bot
+@set NightMAREbot=Whoflags:name online idle Level class g race guild doing hostname poll
+
+@@ Unidle players
+@set NightMAREbot=unidlewho:[iftrue(foreach(remove(lwho(),wmatch(lwho(),num(me)),1),[if(lt(idle(v(0)),v(unidlemax)),name(v(0)))]),remove(lwho(),wmatch(lwho(),num(me)),1))]
+@set NightMAREbot=unidlemax:900
+
+@@ Crontab
+@set NightMAREbot=crontab:{0 0 1 1 * pub Happy new year [config(MUD_NAME)]!} {* 1-5 * * * checkqb}
+@set NightMAREbot=Atime:@@ STOP! Use my @crontab for the atime events!; proc_crontab
+@set NightMAREbot=checkqb:$checkqb:@switch land(not(mod(timefmt(i),15)),unidle(*qb))=1,{p qb=Shouldn't you be in bed?}
+
